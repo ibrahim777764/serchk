@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Chat Messages</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 8px 12px;
+      margin-left: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #searchResults {
+      margin-top: 20px;
+    }
+
+    .message-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 10px;
+      background-color: #f2f2f2;
+    }
+
+    .message {
+      margin-bottom: 5px;
+    }
+
+    .copy-button {
+      padding: 5px 10px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .copy-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+    <h1>Ibrahim Naseer TFT Searcher</h1>
+
+  <input type="text" id="searchInput" placeholder="Search for chat messages">
+  <button onclick="search()">Search</button>
+  <div id="searchResults"></div>
+
+  <script>  
+  const chatData = [
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:26 PM",
+    content: "Nope, it is not available"
+  },
+  {
+    author: "ICTboi",
+    timestamp: "Today at 4:26 PM",
+    content: "Yea"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:26 PM",
+    content: "Hello everyone!"
+  },
+  {
+    author: "ICTboi",
+    timestamp: "Today at 4:27 PM",
+    content: "1 trad 1 night"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:28 PM",
+    content: "Yes, there is an issue in sending out recovery email and it has been escalated to the team"
+  },
+  {
+    author: "ICTboi",
+    timestamp: "Today at 4:28 PM",
+    content: "Is overall dd not equity based"
+  },
+  {
+    author: "The Trading Shark",
+    timestamp: "Today at 4:28 PM",
+    content: "If our funds are stuck for 5-7 days then we should get some extra discount"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:28 PM",
+    content: "ahh"
+  },
+  {
+    author: "general_grievous",
+    timestamp: "Today at 4:29 PM",
+    content: "Guys, how long usually investigation takes? It's really annoying, I've paid more than 36 hr ago, still dont get my account for challenge"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:29 PM",
+    content: "how long is it going to take?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:29 PM",
+    content: "Your DD is calculated base on balance or equity, whichever is higher when the day ends. You can refer to this article https://help.thefundedtraderprogram.com/en/articles/6082939-how-do-the-max-daily-drawdown-and-max-total-drawdown-work-for-the-standard-challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:30 PM",
+    content: "No idea, you can reach out to our support team on live chat for assistance"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:30 PM",
+    content: "Dm me your email and order id"
+  },
+  {
+    author: "paulk",
+    timestamp: "Today at 4:30 PM",
+    content: "Ibro - Moderator"
+  },
+  {
+    author: "ICTboi",
+    timestamp: "Today at 4:31 PM",
+    content: "So the overall dd is not equity based"
+  },
+  {
+    author: "Yash",
+    timestamp: "Today at 4:33 PM",
+    content: "@Angelo - CEO II how many members are participating in the giveaway of eating pizza and running"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:33 PM",
+    content: "thanks man"
+  },
+  {
+    author: "ICTboi",
+    timestamp: "Today at 4:33 PM",
+    content: "How can I check my last night's equity"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:33 PM",
+    content: "appreciate it"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:34 PM",
+    content: "Maximum drawdown is fixed"
+  },
+  {
+    author: "scalpinggod",
+    timestamp: "Today at 4:34 PM",
+    content: "Ibro - Moderator"
+  },
+  {
+    author: "ICTboi",
+    timestamp: "Today at 4:34 PM",
+    content: "Oh"
+  },
+  {
+    author: "akimbo.66",
+    timestamp: "Today at 4:34 PM",
+    content: "So it’s max 500 loss a day on 10k no matter the balance"
+  },
+  {
+    author: "abbas222",
+    timestamp: "Today at 4:34 PM",
+    content: "hi guys, what does additional notes mean? and what should I write when I buy a new account"
+  },
+  {
+    author: "ICTboi",
+    timestamp: "Today at 4:35 PM",
+    content: "Thanks"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:35 PM",
+    content: "Yes, for DD"
+  },
+  {
+    author: "ICTboi",
+    timestamp: "Today at 4:35 PM",
+    content: "Check your equity after daily equity reset imp point"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:35 PM",
+    content: "Standard drawdown is default now (5% for DD and 10% for max DD), but if you purchased with additional drawdown, you will get 6% dd and 12% max DD"
+  },
+  {
+    author: "akimbo.66",
+    timestamp: "Today at 4:36 PM",
+    content: "Understood I thought if I had an 11k balance I can have a loss until 9500"
+  },
+  {
+    author: "horwick",
+    timestamp: "Today at 4:37 PM",
+    content: "??"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:37 PM",
+    content: "You can see your equity balance, profit/loss from positions, and other important info in the Trade tab on the website or TradeHub"
+  },
+  {
+    author: "TradesAndInvestments",
+    timestamp: "Today at 4:37 PM",
+    content: "Exactly it goes by DD, not balance"
+  },
+  {
+    author: "abbas222",
+    timestamp: "Today at 4:37 PM",
+    content: "thank you"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:38 PM",
+    content: "Once the DD hit the max drawdown amount you lose"
+  },
+  {
+    author: "Skull_007",
+    timestamp: "Today at 4:38 PM",
+    content: "Hi"
+  },
+  {
+    author: "TradesAndInvestments",
+    timestamp: "Today at 4:38 PM",
+    content: "So if you're using a 10k account and hit 9500, you have to stop trading"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:38 PM",
+    content: "What’s the max dd?"
+  },
+  {
+    author: "TradesAndInvestments",
+    timestamp: "Today at 4:38 PM",
+    content: "No problem"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:38 PM",
+    content: "For 10k"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:38 PM",
+    content: "Anyone knows why the spreads on xauusd is higher during night?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:38 PM",
+    content: "5%"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:38 PM",
+    content: "Ok"
+  },
+  {
+    author: "yusuf_uysal",
+    timestamp: "Today at 4:39 PM",
+    content: "it is otc so spreads may widen"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:39 PM",
+    content: "Ohhh okay okay"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:39 PM",
+    content: "Thank you"
+  },
+  {
+    author: "Aaron",
+    timestamp: "Today at 4:39 PM",
+    content: "How to withdraw profits"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:39 PM",
+    content: "Hi Aaron"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:39 PM",
+    content: "Anytime!"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:39 PM",
+    content: "yeah that makes sense"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:39 PM",
+    content: "You can withdraw profits to your Skrill, Neteller, or BTC account"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:39 PM",
+    content: "Just like any other asset"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:39 PM",
+    content: "Once your account is funded, you will receive an email with the funding agreement. After you sign it, you can request withdrawals"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:39 PM",
+    content: "Also for money and assets"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:39 PM",
+    content: "Thanks bro"
+  },
+  {
+    author: "Aaron",
+    timestamp: "Today at 4:40 PM",
+    content: "Ohh okay, and how do we add funds?"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:40 PM",
+    content: "Anytime"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:40 PM",
+    content: "You can add funds by going to your dashboard and clicking 'Add Funds'"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:40 PM",
+    content: "You can add funds by going to your dashboard and clicking 'Add Funds'"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:40 PM",
+    content: "I’ll never get why people complain about the spreads. Just trade bigger"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:41 PM",
+    content: "There, you can choose the amount and the payment method"
+  },
+  {
+    author: "Angelo - CEO II",
+    timestamp: "Today at 4:41 PM",
+    content: "@Yash there are 5 members participating in this challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:41 PM",
+    content: "Haha, that's one way to deal with it"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:41 PM",
+    content: "That’s the way"
+  },
+  {
+    author: "yusuf_uysal",
+    timestamp: "Today at 4:41 PM",
+    content: "Spreads are too high, but we have to trade🙄"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:41 PM",
+    content: "Just trade bigger than"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:41 PM",
+    content: "Haha, exactly"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:42 PM",
+    content: "so basically there is a loss of 500$ a day maximum for a 10k account ?"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:42 PM",
+    content: "or 5% per day"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:42 PM",
+    content: "Yes, for standard accounts, the maximum daily drawdown is $500 or 5%"
+  },
+  {
+    author: "abbas222",
+    timestamp: "Today at 4:43 PM",
+    content: "is there any inactivity period for these accounts?"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:43 PM",
+    content: "is there an inactivity fee?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:43 PM",
+    content: "No, there is no inactivity period or fee"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:43 PM",
+    content: "Perfect!"
+  },
+  {
+    author: "J.G",
+    timestamp: "Today at 4:43 PM",
+    content: "you'll just have to pay if you want to do another challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:43 PM",
+    content: "Exactly, only when purchasing a new challenge"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:44 PM",
+    content: "How do we know the prize for each challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:44 PM",
+    content: "You can find the prizes for each challenge on the Funding page of the website"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:44 PM",
+    content: "I think you can find that info on the page"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:45 PM",
+    content: "we should pay another 150$ if we buy an other challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:45 PM",
+    content: "Yes, that's correct"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:45 PM",
+    content: "Thank you!"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:45 PM",
+    content: "You're welcome!"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:45 PM",
+    content: "You can just start trading the funded account and withdraw your profits"
+  },
+  {
+    author: "Gurpreet",
+    timestamp: "Today at 4:45 PM",
+    content: "Why don't we have Credit/Debit Card as a payment option?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:46 PM",
+    content: "Currently, we only support Skrill, Neteller, and BTC as payment options"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:46 PM",
+    content: "after 1 year will my profit be removed from the account or not?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:46 PM",
+    content: "No, your profit will not be removed after 1 year"
+  },
+  {
+    author: "Gurpreet",
+    timestamp: "Today at 4:47 PM",
+    content: "Thanks"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:47 PM",
+    content: "You're welcome!"
+  },
+  {
+    author: "Paul770",
+    timestamp: "Today at 4:47 PM",
+    content: "Hello guys! Good afternoon"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:47 PM",
+    content: "Hello! How can I assist you?"
+  },
+  {
+    author: "Paul770",
+    timestamp: "Today at 4:48 PM",
+    content: "Can I participate in a challenge with a mobile phone?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:48 PM",
+    content: "Yes, you can participate in a challenge using a mobile phone or any other device with an internet connection"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:48 PM",
+    content: "You can, but it's better to use a PC or laptop for better analysis"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:48 PM",
+    content: "That's correct, a PC or laptop might provide a better trading experience"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:49 PM",
+    content: "Is the maximum drawdown for a 10k account 5% ?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:49 PM",
+    content: "Yes, that's correct. The maximum daily drawdown for a 10k account is $500 or 5%"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:49 PM",
+    content: "The max drawdown is $500 or 5% for a 10k account"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:50 PM",
+    content: "Thanks"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:50 PM",
+    content: "You're welcome!"
+  },
+  {
+    author: "TradesAndInvestments",
+    timestamp: "Today at 4:50 PM",
+    content: "Good question"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:50 PM",
+    content: "Thank you"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:50 PM",
+    content: "You're welcome!"
+  },
+  {
+    author: "TradesAndInvestments",
+    timestamp: "Today at 4:50 PM",
+    content: "Is the max dd based on equity or account balance?"
+  },
+  {
+    author: "Paul770",
+    timestamp: "Today at 4:51 PM",
+    content: "Thanks for the info!"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:51 PM",
+    content: "The maximum drawdown is based on whichever is higher between equity and account balance"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:51 PM",
+    content: "is there any commission on our profits?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:51 PM",
+    content: "There is no commission on your profits"
+  },
+  {
+    author: "TradesAndInvestments",
+    timestamp: "Today at 4:52 PM",
+    content: "So if you're using a 10k account and hit 9500, you have to stop trading"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:52 PM",
+    content: "Yes, that's correct"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:52 PM",
+    content: "You can withdraw your profits anytime"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:52 PM",
+    content: "Exactly, you can withdraw profits anytime"
+  },
+  {
+    author: "TradesAndInvestments",
+    timestamp: "Today at 4:52 PM",
+    content: "Alright, thanks for the info"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:52 PM",
+    content: "You're welcome!"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "thanks"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You're welcome!"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "That’s the way"
+  },
+  {
+    author: "yusuf_uysal",
+    timestamp: "Today at 4:53 PM",
+    content: "it is otc so spreads may widen"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Ohhh okay okay"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Thank you"
+  },
+  {
+    author: "Aaron",
+    timestamp: "Today at 4:53 PM",
+    content: "How to withdraw profits"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Hi Aaron"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Anytime!"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "yeah that makes sense"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You can withdraw profits to your Skrill, Neteller, or BTC account"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "Just like any other asset"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Once your account is funded, you will receive an email with the funding agreement. After you sign it, you can request withdrawals"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "Also for money and assets"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Thanks bro"
+  },
+  {
+    author: "Aaron",
+    timestamp: "Today at 4:53 PM",
+    content: "Ohh okay, and how do we add funds?"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "Anytime"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You can add funds by going to your dashboard and clicking 'Add Funds'"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You can add funds by going to your dashboard and clicking 'Add Funds'"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "I’ll never get why people complain about the spreads. Just trade bigger"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "There, you can choose the amount and the payment method"
+  },
+  {
+    author: "Angelo - CEO II",
+    timestamp: "Today at 4:53 PM",
+    content: "@Yash there are 5 members participating in this challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Haha, that's one way to deal with it"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "That’s the way"
+  },
+  {
+    author: "yusuf_uysal",
+    timestamp: "Today at 4:53 PM",
+    content: "Spreads are too high, but we have to trade🙄"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "Just trade bigger than"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Haha, exactly"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "so basically there is a loss of 500$ a day maximum for a 10k account ?"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "or 5% per day"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Yes, for standard accounts, the maximum daily drawdown is $500 or 5%"
+  },
+  {
+    author: "abbas222",
+    timestamp: "Today at 4:53 PM",
+    content: "is there any inactivity period for these accounts"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "is there an inactivity fee?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "No, there is no inactivity period or fee"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Perfect!"
+  },
+  {
+    author: "J.G",
+    timestamp: "Today at 4:53 PM",
+    content: "you'll just have to pay if you want to do another challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Exactly, only when purchasing a new challenge"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:53 PM",
+    content: "How do we know the prize for each challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You can find the prizes for each challenge on the Funding page of the website"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "I think you can find that info on the page"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "we should pay another 150$ if we buy an other challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Yes, that's correct"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:53 PM",
+    content: "Thank you!"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You're welcome!"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "You can just start trading the funded account and withdraw your profits"
+  },
+  {
+    author: "Gurpreet",
+    timestamp: "Today at 4:53 PM",
+    content: "Why don't we have Credit/Debit Card as a payment option?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Currently, we only support Skrill, Neteller, and BTC as payment options"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "after 1 year will my profit be removed from the account or not?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "No, your profit will not be removed after 1 year"
+  },
+  {
+    author: "Gurpreet",
+    timestamp: "Today at 4:53 PM",
+    content: "Thanks"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You're welcome!"
+  },
+  {
+    author: "Paul770",
+    timestamp: "Today at 4:53 PM",
+    content: "Hello guys! Good afternoon"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Hello! How can I assist you?"
+  },
+  {
+    author: "Paul770",
+    timestamp: "Today at 4:53 PM",
+    content: "Can I participate in a challenge with a mobile phone?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Yes, you can participate in a challenge using a mobile phone or any other device with an internet connection"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:53 PM",
+    content: "You can, but it's better to use a PC or laptop for better analysis"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "That's correct, a PC or laptop might provide a better trading experience"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "Is the maximum drawdown for a 10k account 5% ?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Yes, that's correct. The maximum daily drawdown for a 10k account is $500 or 5%"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:53 PM",
+    content: "The max drawdown is $500 or 5% for a 10k account"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "Thanks"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You're welcome!"
+  },
+  {
+    author: "TradesAndInvestments",
+    timestamp: "Today at 4:53 PM",
+    content: "Good question"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:53 PM",
+    content: "Thank you"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You're welcome!"
+  },
+  {
+    author: "TradesAndInvestments",
+    timestamp: "Today at 4:53 PM",
+    content: "Is the max dd based on equity or account balance?"
+  },
+  {
+    author: "Paul770",
+    timestamp: "Today at 4:53 PM",
+    content: "Thanks for the info!"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "The maximum drawdown is based on whichever is higher between equity and account balance"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "is there any commission on our profits?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "There is no commission on your profits"
+  },
+  {
+    author: "TradesAndInvestments",
+    timestamp: "Today at 4:53 PM",
+    content: "So if you're using a 10k account and hit 9500, you have to stop trading"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Yes, that's correct"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:53 PM",
+    content: "You can withdraw your profits anytime"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Exactly, you can withdraw profits anytime"
+  },
+  {
+    author: "TradesAndInvestments",
+    timestamp: "Today at 4:53 PM",
+    content: "Alright, thanks for the info"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You're welcome!"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "thanks"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You're welcome!"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "That’s the way"
+  },
+  {
+    author: "yusuf_uysal",
+    timestamp: "Today at 4:53 PM",
+    content: "it is otc so spreads may widen"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Ohhh okay okay"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Thank you"
+  },
+  {
+    author: "Aaron",
+    timestamp: "Today at 4:53 PM",
+    content: "How to withdraw profits"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Hi Aaron"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Anytime!"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "yeah that makes sense"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You can withdraw profits to your Skrill, Neteller, or BTC account"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "Just like any other asset"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Once your account is funded, you will receive an email with the funding agreement. After you sign it, you can request withdrawals"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "Also for money and assets"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Thanks bro"
+  },
+  {
+    author: "Aaron",
+    timestamp: "Today at 4:53 PM",
+    content: "Ohh okay, and how do we add funds?"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "Anytime"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You can add funds by going to your dashboard and clicking 'Add Funds'"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You can add funds by going to your dashboard and clicking 'Add Funds'"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "I’ll never get why people complain about the spreads. Just trade bigger"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "There, you can choose the amount and the payment method"
+  },
+  {
+    author: "Angelo - CEO II",
+    timestamp: "Today at 4:53 PM",
+    content: "@Yash there are 5 members participating in this challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Haha, that's one way to deal with it"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "That’s the way"
+  },
+  {
+    author: "yusuf_uysal",
+    timestamp: "Today at 4:53 PM",
+    content: "Spreads are too high, but we have to trade🙄"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "Just trade bigger than"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Haha, exactly"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "so basically there is a loss of 500$ a day maximum for a 10k account ?"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "or 5% per day"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Yes, for standard accounts, the maximum daily drawdown is $500 or 5%"
+  },
+  {
+    author: "abbas222",
+    timestamp: "Today at 4:53 PM",
+    content: "is there any inactivity period for these accounts"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "is there an inactivity fee?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "No, there is no inactivity period or fee"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Perfect!"
+  },
+  {
+    author: "J.G",
+    timestamp: "Today at 4:53 PM",
+    content: "you'll just have to pay if you want to do another challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Exactly, only when purchasing a new challenge"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:53 PM",
+    content: "How do we know the prize for each challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You can find the prizes for each challenge on the Funding page of the website"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "I think you can find that info on the page"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "we should pay another 150$ if we buy an other challenge"
+  },
+
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You're welcome!"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "That’s the way"
+  },
+  {
+    author: "yusuf_uysal",
+    timestamp: "Today at 4:53 PM",
+    content: "it is otc so spreads may widen"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Ohhh okay okay"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Thank you"
+  },
+  {
+    author: "Aaron",
+    timestamp: "Today at 4:53 PM",
+    content: "How to withdraw profits"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Hi Aaron"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Anytime!"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "yeah that makes sense"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You can withdraw profits to your Skrill, Neteller, or BTC account"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "Just like any other asset"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Once your account is funded, you will receive an email with the funding agreement. After you sign it, you can request withdrawals"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "Also for money and assets"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Thanks bro"
+  },
+  {
+    author: "Aaron",
+    timestamp: "Today at 4:53 PM",
+    content: "Ohh okay, and how do we add funds?"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "Anytime"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You can add funds by going to your dashboard and clicking 'Add Funds'"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You can add funds by going to your dashboard and clicking 'Add Funds'"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "I’ll never get why people complain about the spreads. Just trade bigger"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "There, you can choose the amount and the payment method"
+  },
+  {
+    author: "Angelo - CEO II",
+    timestamp: "Today at 4:53 PM",
+    content: "@Yash there are 5 members participating in this challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Haha, that's one way to deal with it"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "That’s the way"
+  },
+  {
+    author: "yusuf_uysal",
+    timestamp: "Today at 4:53 PM",
+    content: "Spreads are too high, but we have to trade🙄"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "Just trade bigger than"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Haha, exactly"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "so basically there is a loss of 500$ a day maximum for a 10k account ?"
+  },
+  {
+    author: "aymenbhs",
+    timestamp: "Today at 4:53 PM",
+    content: "or 5% per day"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Yes, for standard accounts, the maximum daily drawdown is $500 or 5%"
+  },
+  {
+    author: "abbas222",
+    timestamp: "Today at 4:53 PM",
+    content: "is there any inactivity period for these accounts"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "is there an inactivity fee?"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "No, there is no inactivity period or fee"
+  },
+  {
+    author: "TheChosenOne",
+    timestamp: "Today at 4:53 PM",
+    content: "Perfect!"
+  },
+  {
+    author: "J.G",
+    timestamp: "Today at 4:53 PM",
+    content: "you'll just have to pay if you want to do another challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "Exactly, only when purchasing a new challenge"
+  },
+  {
+    author: "Sam8",
+    timestamp: "Today at 4:53 PM",
+    content: "How do we know the prize for each challenge"
+  },
+  {
+    author: "Ibro - Moderator",
+    timestamp: "Today at 4:53 PM",
+    content: "You can find the prizes for each challenge on the Funding page of the website"
+  },
+  {
+    author: "Trader_DaanNL",
+    timestamp: "Today at 4:53 PM",
+    content: "I think you can find that info on the page"
+  },
+  {
+author: "SSK - Moderator",
+timestamp: "07/12/2023 1:08 PM",
+content: "24 hours for phase 2 credentials"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:08 PM",
+content: "For rapid 12 hours, for Royal and standard accounts within 24 hours"
+},
+{
+author: "ds",
+timestamp: "07/12/2023 1:09 PM",
+content: "Yes I did trade 5 days"
+},
+{
+author: "ds",
+timestamp: "07/12/2023 1:09 PM",
+content: "But this email has been sent after 24hrs when will the new login be sent"
+},
+{
+author: "Mr MaMa",
+timestamp: "07/12/2023 1:10 PM",
+content: "hai"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:10 PM",
+content: "You will receive it within 24 business hours after your period ends"
+},
+{
+author: "ds",
+timestamp: "07/12/2023 1:11 PM",
+content: "It ended yesterday 24hrs so I can expect email today or tomorrow?"
+},
+{
+author: "JacobTMan",
+timestamp: "07/12/2023 1:11 PM",
+content: "How long does it take to be accepted onto the Funded Traders channel - I've applied a couple of times with my credentials but haven't heard anything."
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:11 PM",
+content: "Before today ends pal!"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:11 PM",
+content: "It takes within 48 business hours"
+},
+{
+author: "JacobTMan",
+timestamp: "07/12/2023 1:12 PM",
+content: "Okay thanks Ibro ';)"
+},
+{
+author: "Haider Arshad",
+timestamp: "07/12/2023 1:13 PM",
+content: "Hello. I have completed my evaluation phase and now I am funded. I want to share profits. Please guide me through the process. Thanks in advance."
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:15 PM",
+content: "Please refer to this article https://help.thefundedtraderprogram.com/en/articles/6082961-how-do-you-process-payouts-for-funded-accounts"
+},
+{
+author: "Adeena 👑",
+timestamp: "07/12/2023 1:16 PM",
+content: "EIGHTCAP Mt5 login to check spreads"
+},
+{
+author: "Haider Arshad",
+timestamp: "07/12/2023 1:16 PM",
+content: "I have processed a withdrawal request and I have received my payout. Now I want to share the withdrawal certificate in the traders' profit share tab, but I have no access to it."
+},
+{
+author: "SSK - Moderator",
+timestamp: "07/12/2023 1:16 PM",
+content: "https://help.thefundedtraderprogram.com/en/articles/8058330-using-our-spreads-test-account"
+},
+{
+author: "SSK - Moderator",
+timestamp: "07/12/2023 1:17 PM",
+content: "you may share it here ⁠🏆╏profits"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:17 PM",
+content: "Oh I see, verify here ⁠✅╏funded-verification"
+},
+{
+author: "Haider Arshad",
+timestamp: "07/12/2023 1:19 PM",
+content: "I have provided the details and now what?"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:19 PM",
+content: "It will update within 48 business hours"
+},
+{
+author: "Haider Arshad",
+timestamp: "07/12/2023 1:20 PM",
+content: "Do I get an email regarding this, or it will automatically update?"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:21 PM",
+content: "It will automatically update!"
+},
+{
+author: "Haider Arshad",
+timestamp: "07/12/2023 1:23 PM",
+content: "And do I have a specific time to share the profits?"
+},
+{
+author: "SSK - Moderator",
+timestamp: "07/12/2023 1:23 PM",
+content: ":catnoo:"
+},
+{
+author: "TDAVID",
+timestamp: "07/12/2023 1:24 PM",
+content: "Hi can you show me crypto spread?"
+},
+{
+author: "SSK - Moderator",
+timestamp: "07/12/2023 1:24 PM",
+content: "https://help.thefundedtraderprogram.com/en/articles/8058330-using-our-spreads-test-account"
+},
+{
+author: "TDAVID",
+timestamp: "07/12/2023 1:25 PM",
+content: "If you could Just send me a screenshot"
+},
+{
+author: "Haider Arshad",
+timestamp: "07/12/2023 1:25 PM",
+content: "@Ibro - Moderator Thank you so much for the help provided, I really appreciate it."
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:25 PM",
+content: "No worries pal, wish you the best of luck 🤞"
+},
+{
+author: "AzizanTheGr8",
+timestamp: "07/12/2023 1:26 PM",
+content: "SSK - Moderator",
+timestamp: "07/12/2023 1:26 PM",
+content: "Eightcap Spreads Here: ⁠💬╏general-chat⁠"
+},
+{
+author: "Purple Trading Spreads Here",
+timestamp: "07/12/2023 1:26 PM",
+content: "⁠💬╏general-chat⁠"
+},
+{
+author: "TDAVID",
+timestamp: "07/12/2023 1:27 PM",
+content: "I'm interested in crypto spread"
+},
+{
+author: "SSK - Moderator",
+timestamp: "07/12/2023 1:34 PM",
+content: "⁠💬╏general-chat⁠ you can try yourself here, for each broker"
+},
+{
+author: "maninder",
+timestamp: "07/12/2023 1:34 PM",
+content: "hey bro check dm"
+},
+{
+author: "Anez",
+timestamp: "07/12/2023 1:36 PM",
+content: "Hey, I already signed the agreement but my account still disabled. When can I start trading?"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:36 PM",
+content: "What your account type?"
+},
+{
+author: "SSK - Moderator",
+timestamp: "07/12/2023 1:36 PM",
+content: "Account type & when did you sign the agreement?"
+},
+{
+author: "Anez",
+timestamp: "07/12/2023 1:36 PM",
+content: "Standard, last night"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:37 PM",
+content: "Standard accounts are enabled on Wednesday and Sunday, whichever is nearest. Probably your account should be enabled before today ends"
+},
+{
+author: "jemjeminijem",
+timestamp: "07/12/2023 1:38 PM",
+content: "I can't connect on my MT4 mobile. It says no connection, but my MT5 is working. Is there a maintenance?"
+},
+{
+author: "Anez",
+timestamp: "07/12/2023 1:38 PM",
+content: "Thanks a lot 😁"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:38 PM",
+content: "Try uninstalling and reinstalling pal"
+},
+{
+author: "aaniba-abdelhalim",
+timestamp: "07/12/2023 1:40 PM",
+content: "You can't connect an MT5 account to an MT4"
+},
+{
+author: "jemjeminijem",
+timestamp: "07/12/2023 1:41 PM",
+content: "No all good, I just uninstalled and reinstalled MT4"
+},
+{
+author: "Angelo - CEO II",
+timestamp: "07/12/2023 1:44 PM",
+content: "Jobaer_Ahmad_Emon",
+timestamp: "07/12/2023 1:56 PM",
+content: "I didn’t understand Additional Drawdown"
+},
+{
+author: "Ek piyali chaye pilado",
+timestamp: "07/12/2023 1:56 PM",
+content: ":timmacCLAPgifemoji:"
+},
+{
+author: "Jedi",
+timestamp: "07/12/2023 1:56 PM",
+content: "Thank you for the opportunity to become financially free"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:57 PM",
+content: "+1% to daily drawdown, +2% max drawdown"
+},
+{
+author: "Jedi",
+timestamp: "07/12/2023 1:57 PM",
+content: "Onto phase 2 LFG!"
+},
+{
+author: "Noor",
+timestamp: "07/12/2023 1:57 PM",
+content: "Can I reset my account before my 60 days time limit ends?"
+},
+{
+author: "Angelo - CEO II",
+timestamp: "07/12/2023 1:57 PM",
+content: "The opportunity is yours if you take it"
+},
+{
+author: "kerica",
+timestamp: "07/12/2023 1:57 PM",
+content: "Please can someone explain the minimum trading days, for example, if it says five minimum trading days, what does that mean?"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:57 PM",
+content: "Nope :catnoo:"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 1:58 PM",
+content: "It means you must open and close the trade on the same day for 5 days"
+},
+{
+author: "Roi",
+timestamp: "07/12/2023 1:59 PM",
+content: "guys 140 trades, only 3 losses, good, right?"
+},
+{
+author: "kerica",
+timestamp: "07/12/2023 2:01 PM",
+content: "OK, then after the five days, I can start closing trades after a day?"
+},
+{
+author: "lightofkingdoms",
+timestamp: "07/12/2023 2:01 PM",
+content: "Roi",
+timestamp: "07/12/2023 2:01 PM",
+content: "Image"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 2:01 PM",
+content: "Up to you :hurrah:"
+},
+{
+author: "arcangelileo",
+timestamp: "07/12/2023 2:01 PM",
+content: "is thinkmarkets raw spread? and how many commissions per lot?"
+},
+{
+author: "Ibro - Moderator",
+timestamp: "07/12/2023 2:02 PM",
+content: "Yes, please refer to this article https://help.thefundedtraderprogram.com/en/articles/6082977-what-is-the-commission-fee-structure"
+},
+{
+author: "Adeena 👑",
+timestamp: "07/12/2023 2:02 PM",
+content: "$7 per lot"
+},
+{
+author: "Gvinefx",
+timestamp: "07/12/2023 2:06 PM",
+content: "Is it possible to open 5 positions with 30 lots (indices) trading monthly free challenge"
+},
+{
+author: "SSK - Moderator",
+timestamp: "07/12/2023 2:06 PM",
+content: "Yes 👍"
+}
+
+  ];
+  function search() {
+      const searchInput = document.getElementById("searchInput").value.toLowerCase();
+      const searchResults = document.getElementById("searchResults");
+
+      let foundResults = [];
+
+      for (const message of chatData) {
+        if (message.content.toLowerCase().includes(searchInput)) {
+          foundResults.push(`
+            <div class="message-container">
+              <div class="message">
+                <strong>${message.author}</strong> — ${message.timestamp}:<br>
+                ${message.content}
+              </div>
+              <button class="copy-button" onclick="copyText('${message.content}')">Copy</button>
+            </div>
+          `);
+        }
+      }
+
+      if (foundResults.length > 0) {
+        searchResults.innerHTML = foundResults.join("");
+      } else {
+        searchResults.innerHTML = '<div>No chat messages found.</div>';
+      }
+    }
+
+    function copyText(text) {
+      const tempInput = document.createElement("textarea");
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+      alert("Copied to clipboard!");
+    }
+  </script>
+</body>
+</html>
+
